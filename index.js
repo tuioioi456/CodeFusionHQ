@@ -1,22 +1,12 @@
-function canFinish(numCourses, prerequisites) {
-  const graph = new Array(numCourses).fill(0).map(() => []);
-  const inDegree = new Array(numCourses).fill(0);
-  for (const [course, pre] of prerequisites) {
-    graph[pre].push(course);
-    inDegree[course]++;
-  }
-  const queue = [];
-  for (let i = 0; i < numCourses; i++) {
-    if (inDegree[i] === 0) queue.push(i);
-  }
-  let count = 0;
-  while (queue.length) {
-    const course = queue.shift();
-    count++;
-    for (const nextCourse of graph[course]) {
-      inDegree[nextCourse]--;
-      if (inDegree[nextCourse] === 0) queue.push(nextCourse);
-    }
-  }
-  return count === numCourses;
+function buildTree(inorder, postorder) {
+  if (!inorder.length || !postorder.length) return null;
+  const rootVal = postorder[postorder.length - 1];
+  const root = new TreeNode(rootVal);
+  const mid = inorder.indexOf(rootVal);
+  root.left = buildTree(inorder.slice(0, mid), postorder.slice(0, mid));
+  root.right = buildTree(
+    inorder.slice(mid + 1),
+    postorder.slice(mid, postorder.length - 1),
+  );
+  return root;
 }
