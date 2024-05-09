@@ -1,12 +1,20 @@
-function buildTree(inorder, postorder) {
-  if (!inorder.length || !postorder.length) return null;
-  const rootVal = postorder[postorder.length - 1];
-  const root = new TreeNode(rootVal);
-  const mid = inorder.indexOf(rootVal);
-  root.left = buildTree(inorder.slice(0, mid), postorder.slice(0, mid));
-  root.right = buildTree(
-    inorder.slice(mid + 1),
-    postorder.slice(mid, postorder.length - 1),
-  );
-  return root;
+function zigzagLevelOrder(root) {
+  if (!root) return [];
+  const result = [];
+  const queue = [root];
+  let zigzag = false;
+  while (queue.length) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      if (zigzag) currentLevel.unshift(node.val);
+      else currentLevel.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    result.push(currentLevel);
+    zigzag = !zigzag;
+  }
+  return result;
 }
