@@ -1,11 +1,17 @@
-function isValidBST(root) {
-  return isValid(root, null, null);
-  function isValid(node, min, max) {
-    if (!node) return true;
-    if ((min !== null && node.val <= min) || (max !== null && node.val >= max))
-      return false;
-    return (
-      isValid(node.left, min, node.val) && isValid(node.right, node.val, max)
-    );
+function decodeString(s) {
+  const stack = [];
+  for (const char of s) {
+    if (char !== "]") stack.push(char);
+    else {
+      let str = "";
+      while (stack.length && stack[stack.length - 1] !== "[")
+        str = stack.pop() + str;
+      stack.pop();
+      let num = "";
+      while (stack.length && !isNaN(stack[stack.length - 1]))
+        num = stack.pop() + num;
+      stack.push(str.repeat(parseInt(num)));
+    }
   }
+  return stack.join("");
 }
